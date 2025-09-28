@@ -1,0 +1,72 @@
+# Walrus Configuration for SuiQuiz Platform
+[project]
+name = "suiquiz-platform"
+description = "SuiQuiz - Kahoot on Sui Blockchain"
+version = "1.0.0"
+
+[deployment]
+# Frontend deployment (Walrus free subdomain)
+[deployment.frontend]
+type = "static"
+source = "./ui/dist"
+domain = "suiquiz-platform.wal.app"
+
+# Backend deployment (Walrus free subdomain)
+[deployment.backend]
+type = "nodejs"
+source = "./gas-station"
+domain = "suiquiz-api.wal.app"
+port = 3001
+
+# Environment variables for production
+[deployment.backend.env]
+NODE_ENV = "production"
+PORT = "3001"
+SUI_NETWORK = "testnet"
+SUI_RPC_URL = "https://fullnode.testnet.sui.io:443"
+FRONTEND_URL = "https://suiquiz-platform.wal.app"
+
+# Package IDs (Your working testnet IDs)
+QUIZ_PACKAGE_ID = "0xcc56ad1275ac682e8472de9ee1fff17348c10342fbbb996359d3cffd20efc05c"
+BADGE_PACKAGE_ID = "0xcc56ad1275ac682e8472de9ee1fff17348c10342fbbb996359d3cffd20efc05c" 
+QUIZ_ROOM_PACKAGE_ID = "0xcc56ad1275ac682e8472de9ee1fff17348c10342fbbb996359d3cffd20efc05c"
+BADGE_ADMIN_CAP_ID = "0xcc918089622b7c56a462afc2fc488ede9f6b962929d622d7f45e1dbc31782378"
+
+# Enoki Keys (Your working keys)
+ENOKI_API_KEY = "enoki_public_112e16a1ce7fc2ff1e4e9bd06b951de6"
+ENOKI_PRIVATE_KEY = "enoki_private_3d25a3d0e515c9b3274c4dee788d4a85"
+
+# Walrus Configuration (Testnet)
+WALRUS_URL = "https://testnet.wal.app"
+WALRUS_RPC_URL = "https://fullnode.testnet.sui.io:443"
+
+# Google OAuth (Your working keys)
+GOOGLE_CLIENT_ID = "20125149505-k6stooabdj31t2lsibg5jq645ge90vbl.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+GOOGLE_REDIRECT_URI = "https://suiquiz-platform.wal.app"
+
+# JWT Configuration
+JWT_SECRET = "suiquiz_jwt_secret_2025_production_key_32_chars"
+JWT_EXPIRES_IN = "7d"
+
+# Database (Walrus blockchain storage)
+DATABASE_URL = "walrus://suiquiz-db"
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS = "900000"
+RATE_LIMIT_MAX_REQUESTS = "100"
+
+# Logging
+LOG_LEVEL = "info"
+LOG_FILE = "/var/log/suiquiz.log"
+
+[build]
+# Frontend build
+[build.frontend]
+command = "npm run build"
+working_dir = "./ui"
+
+# Backend build
+[build.backend]
+command = "npm ci --only=production"
+working_dir = "./gas-station"
