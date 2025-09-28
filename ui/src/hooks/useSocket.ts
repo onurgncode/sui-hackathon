@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { config } from '../config/environment';
 
 interface UseSocketReturn {
   socket: Socket | null;
@@ -42,7 +43,7 @@ export function useSocket(): UseSocketReturn {
     // Use existing socket or create new one
     if (!globalSocket) {
       console.log('🔌 Creating new WebSocket connection');
-      globalSocket = io('http://localhost:3001', {
+      globalSocket = io(config.api.wsUrl, {
         transports: ['websocket', 'polling'], // Allow both WebSocket and polling
         autoConnect: true,
         reconnection: true,

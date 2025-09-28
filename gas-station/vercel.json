@@ -11,5 +11,15 @@
       "src": "/(.*)",
       "dest": "/server.js"
     }
-  ]
+  ],
+  "env": {
+    "QUIZ_PACKAGE_ID": "@quiz_package_id",
+    "BADGE_PACKAGE_ID": "@badge_package_id",
+    "QUIZ_ROOM_PACKAGE_ID": "@quiz_room_package_id",
+    "BADGE_ADMIN_CAP_ID": "@badge_admin_cap_id",
+    "ENOKI_API_KEY": "@enoki_api_key",
+    "WALRUS_API_URL": "https://testnet.wal.app",
+    "SUI_RPC_URL": "https://fullnode.testnet.sui.io:443",
+    "NODE_ENV": "production"
+  }
 }

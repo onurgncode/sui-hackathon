@@ -3,6 +3,7 @@ import { Box, Button, Card, Flex, Heading, Text, TextField, TextArea } from "@ra
 import { SuccessModal } from "./Modal";
 import { useZkLogin } from "../hooks/useZkLogin";
 import { useSuiWallet } from "../hooks/useSuiWallet";
+import { config } from "../config/environment";
 
 interface Question {
   id: string;
@@ -50,7 +51,7 @@ export function CreateQuiz({ refreshKey, setRefreshKey, onNavigateToLobby }: Cre
 
     setIsCheckingBalance(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/balance/${address}`);
+      const response = await fetch(`${config.api.baseUrl}/api/balance/${address}`);
       if (response.ok) {
         const data = await response.json();
         setWalletBalance(data.balance || 0);
@@ -83,7 +84,7 @@ export function CreateQuiz({ refreshKey, setRefreshKey, onNavigateToLobby }: Cre
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch('http://localhost:3001/api/upload-image', {
+      const response = await fetch(`${config.api.baseUrl}/api/upload-image`, {
         method: 'POST',
         body: formData,
       });
@@ -224,7 +225,7 @@ export function CreateQuiz({ refreshKey, setRefreshKey, onNavigateToLobby }: Cre
       const hostAddress = getAddress() || '0x0000000000000000000000000000000000000000';
 
       // Send to backend to create room
-      const response = await fetch('http://localhost:3001/api/rooms', {
+      const response = await fetch(`${config.api.baseUrl}/api/rooms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

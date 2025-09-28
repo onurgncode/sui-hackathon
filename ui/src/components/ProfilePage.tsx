@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Button, Card, Flex, Heading, Text, Badge, Separator, Grid } from "@radix-ui/themes";
 import { useZkLogin } from "../hooks/useZkLogin";
+import { config } from "../config/environment";
 import { useSuiWallet } from "../hooks/useSuiWallet";
 
 interface QuizStats {
@@ -73,21 +74,21 @@ export function ProfilePage({ onNavigateToLobby, onNavigateToCreate, onNavigateT
     setIsLoading(true);
     try {
       // Load user stats
-      const statsResponse = await fetch(`http://localhost:3001/api/profile/${currentAddress}/stats`);
+      const statsResponse = await fetch(`${config.api.baseUrl}/api/profile/${currentAddress}/stats`);
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
         setStats(statsData);
       }
 
       // Load quiz history
-      const historyResponse = await fetch(`http://localhost:3001/api/profile/${currentAddress}/history`);
+      const historyResponse = await fetch(`${config.api.baseUrl}/api/profile/${currentAddress}/history`);
       if (historyResponse.ok) {
         const historyData = await historyResponse.json();
         setQuizHistory(historyData);
       }
 
       // Load badges
-      const badgesResponse = await fetch(`http://localhost:3001/api/profile/${currentAddress}/badges`);
+      const badgesResponse = await fetch(`${config.api.baseUrl}/api/profile/${currentAddress}/badges`);
       if (badgesResponse.ok) {
         const badgesData = await badgesResponse.json();
         setBadges(badgesData);

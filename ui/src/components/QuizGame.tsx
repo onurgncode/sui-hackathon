@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Box, Button, Flex, Heading, Text, Card } from "@radix-ui/themes";
 import { useSocket } from "../hooks/useSocket";
 import { useZkLogin } from "../hooks/useZkLogin";
+import { config } from "../config/environment";
 
 interface Question {
   id: string;
@@ -406,7 +407,7 @@ export function QuizGame({ refreshKey, setRefreshKey, roomCode: propRoomCode, is
                     console.log('Starting quiz as host');
                     try {
                       const hostAddress = getAddress();
-                      const response = await fetch(`http://localhost:3001/api/rooms/${roomCode}/start`, {
+                      const response = await fetch(`${config.api.baseUrl}/api/rooms/${roomCode}/start`, {
                         method: 'POST',
                         headers: {
                           'Content-Type': 'application/json',
@@ -817,7 +818,7 @@ export function QuizGame({ refreshKey, setRefreshKey, roomCode: propRoomCode, is
                 onClick={async () => {
                   try {
                     const hostAddress = getAddress();
-                    const response = await fetch(`http://localhost:3001/api/rooms/${roomCode}/start`, {
+                    const response = await fetch(`${config.api.baseUrl}/api/rooms/${roomCode}/start`, {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
@@ -860,7 +861,7 @@ export function QuizGame({ refreshKey, setRefreshKey, roomCode: propRoomCode, is
                   if (confirm('Are you sure you want to stop this quiz? The quiz will be paused and players can continue later.')) {
                     try {
                       const hostAddress = getAddress();
-                      const response = await fetch(`http://localhost:3001/api/rooms/${roomCode}/stop`, {
+                      const response = await fetch(`${config.api.baseUrl}/api/rooms/${roomCode}/stop`, {
                         method: 'POST',
                         headers: {
                           'Content-Type': 'application/json',

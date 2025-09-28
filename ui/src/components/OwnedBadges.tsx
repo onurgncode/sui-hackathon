@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Button, Flex, Heading, Text, Card } from "@radix-ui/themes";
 import { useZkLogin } from "../hooks/useZkLogin";
+import { config } from "../config/environment";
 
 interface Badge {
   id: string;
@@ -45,7 +46,7 @@ export function OwnedBadges({ refreshKey, setRefreshKey }: OwnedBadgesProps) {
         
         console.log('✅ Fetching badges for address:', userAddress);
         
-        const response = await fetch(`http://localhost:3001/api/badges/${userAddress}`);
+        const response = await fetch(`${config.api.baseUrl}/api/badges/${userAddress}`);
         console.log('Badge fetch response status:', response.status);
         
         if (response.ok) {
@@ -116,7 +117,7 @@ export function OwnedBadges({ refreshKey, setRefreshKey }: OwnedBadgesProps) {
 
       console.log('Sealing badge:', { badgeId, userAddress });
 
-      const response = await fetch('http://localhost:3001/api/seal-badge', {
+      const response = await fetch(`${config.api.baseUrl}/api/seal-badge`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

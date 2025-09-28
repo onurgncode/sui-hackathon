@@ -1,17 +1,18 @@
 {
-  "builds": [
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "env": {
+    "VITE_API_BASE_URL": "@vite_api_base_url",
+    "VITE_WS_URL": "@vite_ws_url",
+    "VITE_SUI_NETWORK": "testnet",
+    "VITE_SUI_RPC_URL": "https://fullnode.testnet.sui.io:443",
+    "VITE_GOOGLE_CLIENT_ID": "20125149505-k6stooabdj31t2lsibg5jq645ge90vbl.apps.googleusercontent.com"
+  }
 }

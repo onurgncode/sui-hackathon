@@ -3,6 +3,7 @@ import { Box, Button, Flex, Heading, Text, TextField, Card } from "@radix-ui/the
 import { useSocket } from "../hooks/useSocket";
 import { useZkLogin } from "../hooks/useZkLogin";
 import { SuccessModal } from "./Modal";
+import { config } from "../config/environment";
 
 interface QuizRoom {
   id: string;
@@ -77,7 +78,7 @@ export function QuizLobby({ refreshKey, setRefreshKey, onNavigateToGame }: QuizL
   // Fetch rooms from backend
   const fetchRooms = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/rooms');
+      const response = await fetch(`${config.api.baseUrl}/api/rooms`);
       const result = await response.json();
       
       if (result.success) {
@@ -482,7 +483,7 @@ export function QuizLobby({ refreshKey, setRefreshKey, onNavigateToGame }: QuizL
                             if (confirm('Are you sure you want to delete this room? All players will be disconnected and the room will be permanently deleted.')) {
                               try {
                                 const hostAddress = getAddress();
-                                const response = await fetch(`http://localhost:3001/api/rooms/${room.roomCode}`, {
+                                const response = await fetch(`${config.api.baseUrl}/api/rooms/${room.roomCode}`, {
                                   method: 'DELETE',
                                   headers: {
                                     'Content-Type': 'application/json',

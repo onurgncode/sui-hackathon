@@ -1412,26 +1412,30 @@ app.post('/api/rooms', async (req, res) => {
       }
     }, hostAddress);
     
-    // Save to Walrus database
-    const saveResult = await saveQuizRoom(roomCode, {
-      id: room.id,
-      roomCode: room.roomCode,
-      quizData: room.quizData,
-      hostAddress: room.hostAddress,
-      gameState: room.gameState,
-      createdAt: room.createdAt,
-      rewardInfo: room.quizData.rewardInfo
-    });
+    // Add to memory cache directly (skip Walrus for now)
+    quizRooms.set(roomCode, room);
+    console.log(`✅ New quiz room created: ${roomCode} by ${hostAddress}`);
+    console.log(`📊 Cache updated: ${quizRooms.size} rooms in memory`);
     
-    if (saveResult.success) {
-      quizRooms.set(roomCode, room); // Update cache with full room object
-      console.log(`✅ New quiz room created and saved: ${roomCode} by ${hostAddress}`);
-      console.log(`📊 Cache updated: ${quizRooms.size} rooms in memory`);
-    } else {
-      console.error('❌ Failed to save quiz room to database:', saveResult.error);
-      // Still add to cache even if database save failed
-      quizRooms.set(roomCode, room);
-      console.log(`⚠️ Quiz room added to cache despite database error: ${roomCode}`);
+    // Try to save to Walrus database (optional)
+    try {
+      const saveResult = await saveQuizRoom(roomCode, {
+        id: room.id,
+        roomCode: room.roomCode,
+        quizData: room.quizData,
+        hostAddress: room.hostAddress,
+        gameState: room.gameState,
+        createdAt: room.createdAt,
+        rewardInfo: room.quizData.rewardInfo
+      });
+      
+      if (saveResult.success) {
+        console.log(`🌊 Quiz room also saved to Walrus: ${roomCode}`);
+      } else {
+        console.warn(`⚠️ Failed to save to Walrus (but room is in memory): ${saveResult.error}`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Walrus save failed (but room is in memory): ${error.message}`);
     }
     
     res.json({
@@ -2452,7 +2456,7 @@ function generateRoomCode() {
 }
 
 // Start server
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   logWithMetrics('info', 'SuiQuiz Gas Station server started', {
     port: PORT,
